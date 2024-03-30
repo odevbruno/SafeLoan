@@ -44,7 +44,7 @@ contract SafeLoan {
         require(initial.collateralAmount == 0 || (initial.collateralAmount > 0 && initial.paid == true), "You have an open loan !");
         uint256 extraAmountToLiquidate = (_borrowedAmount * minCollateralizationRatio) / 100;
         require(_collateralAmount >= extraAmountToLiquidate, "Insufficient Collateral");
-        require(_sentEtherTo(address(this), _collateralAmount), "Transfer failed");
+        require(collateralToken.transferFrom(msg.sender, address(this), _collateralAmount), "Transfer failed");
         LoanInfo memory newLoan = LoanInfo({
             borrower: msg.sender,
             borrowedAmount: _borrowedAmount,
